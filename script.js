@@ -22,7 +22,28 @@ document.addEventListener('DOMContentLoaded', () => {
     reveals.forEach(reveal => revealObserver.observe(reveal));
 
     const stackItems = document.querySelectorAll('.stack-item');
+    const header = document.querySelector('header');
+    let lastScrollY = window.scrollY;
+
     window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+
+        // Smart Navbar Logic
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            header.classList.add('nav-hidden');
+        } else {
+            header.classList.remove('nav-hidden');
+        }
+
+        if (currentScrollY > 50) {
+            header.classList.add('nav-scrolled');
+        } else {
+            header.classList.remove('nav-scrolled');
+        }
+
+        lastScrollY = currentScrollY;
+
+        // Visual Stack Progress
         stackItems.forEach((item) => {
             const visual = item.querySelector('.stack-visual');
             const rect = item.getBoundingClientRect();
@@ -36,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-    });
+    }, { passive: true });
 
     const navLinks = document.querySelectorAll('.nav-links a');
     navLinks.forEach(link => {
